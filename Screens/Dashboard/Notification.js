@@ -8,7 +8,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../../Actions/Api';
 import { useFonts } from 'expo-font';
@@ -18,7 +18,6 @@ const Notification = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch access token from AsyncStorage
   const getAccessToken = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
@@ -30,11 +29,10 @@ const Notification = ({ navigation }) => {
   };
 
   const [fontsLoaded] = useFonts({
-      Almarai_400Regular,
-      Almarai_700Bold,
-    });
+    Almarai_400Regular,
+    Almarai_700Bold,
+  });
 
-  // Fetch notifications from backend
   const fetchNotifications = async () => {
     const token = await getAccessToken();
 
@@ -65,7 +63,6 @@ const Notification = ({ navigation }) => {
     }
   };
 
-  // Mark notification as read
   const markAsRead = async (notificationId) => {
     const token = await getAccessToken();
 
@@ -103,7 +100,6 @@ const Notification = ({ navigation }) => {
     }
   };
 
-  // Fetch notifications when the component mounts
   useEffect(() => {
     fetchNotifications();
   }, []);
@@ -117,35 +113,24 @@ const Notification = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Header Section - Full width */}
+    <View style={styles.container}>
       <View style={styles.header}>
+        <Text style={styles.text}>Notifications</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <FontAwesome name="angle-left" size={34} color="#fff" />
+        </TouchableOpacity>
       </View>
 
-      {/* Back Button Icon */}
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}   
-        style={styles.backButton}
-      >
-        <FontAwesome name="angle-left" size={34} color="rgba(24,212,184,255)" />
-      </TouchableOpacity>
-
-      {/* Scrollable Content */}
       <ScrollView style={styles.container}>
-        {/* Title Section */}
-        <View style={styles.textSection}>
-          <Text style={styles.text}>Notifications</Text>
-          <View style={styles.borderLine} />
-        </View>
-
-        {/* Notifications Section */}
         {notifications.map((notification) => (
           <TouchableOpacity
             key={notification.id}
             onPress={() => markAsRead(notification.id)}
             style={styles.notificationSection}
           >
-            {/* Text Aligned to Right */}
             <Text
               style={[
                 styles.rightAlignedText,
@@ -154,8 +139,7 @@ const Notification = ({ navigation }) => {
             >
               {notification.title}
             </Text>
-            {/* Dummy Text Aligned to Left */}
-            <Text style={styles.leftAlignedText}>{notification.bosy}</Text>
+            <Text style={styles.leftAlignedText}>{notification.body}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -163,93 +147,66 @@ const Notification = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    // paddingHorizontal: 20,
+    paddingVertical: 30,
+    // paddingTop:50
   },
   header: {
     width: '100%',
     backgroundColor: 'rgba(24,212,184,255)',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    flexDirection: 'row',
+    paddingVertical: 15,
     alignItems: 'center',
-  },
-  languageIcon: {
-    marginRight: 15,
+    justifyContent: 'center',
+    position: 'relative',
+    height:100
   },
   backButton: {
-    marginLeft: 10,
-  },
-  textSection: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 20,
+    position: 'absolute',
+    left: 15,
+    top: 15,
   },
   text: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'Almarai_700Bold',
-    color: '#2a4770',
-    textAlign: 'right',
-  },
-  borderLine: {
-    height: 4,
-    backgroundColor: '#2a4770',
-    marginTop: 10,
-    alignSelf: 'stretch', // Ensures it spans the parent's full width
-  },
-  card: {
-    width: '100%',
-    flexDirection: 'row',
-    borderRadius: 10,
-    elevation: 5, // Adds shadow for Android
-    shadowColor: '#000', // Adds shadow for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    padding: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-    height: 100,
-  },
-  cardBlack: {
-    backgroundColor: 'black',
+    color: '#fff',
+    marginTop:40
   },
   notificationSection: {
-    marginTop: 20,
-    marginBottom:20,
-  },
-  rightAlignedText: {
-    fontSize: 18,
-    fontFamily: 'Almarai_700Bold',
-    color: '#2a4770',
-    textAlign: 'right',
-    marginBottom: 5,
-  },
-  leftAlignedText: {
-    fontSize: 14,
-    color: '#444',
-    textAlign: 'left',
-  },
-
-  rightTextContainer: {
-    alignItems: 'flex-end', // Aligns text to the right
-    marginBottom: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   rightAlignedText: {
     fontSize: 16,
     fontFamily: 'Almarai_700Bold',
     color: '#2a4770',
     textAlign: 'right',
+    marginBottom: 5,
   },
-  leftTextContainer: {
-    alignItems: 'flex-start', // Aligns text to the left
+  readNotification: {
+    color: '#9e9e9e',
   },
   leftAlignedText: {
     fontSize: 14,
-    color: '#444',
+    color: '#666',
     textAlign: 'left',
+    lineHeight: 20,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
 });
 

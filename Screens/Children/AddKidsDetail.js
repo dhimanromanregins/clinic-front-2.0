@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(24,212,184,255)', 
     paddingVertical: 10,
     paddingHorizontal: 5,
-    flexDirection: 'row', s
+    flexDirection: 'row', 
     justifyContent: 'space-between',
     padding: 0,
     marginTop: 30,

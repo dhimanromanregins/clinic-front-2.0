@@ -71,7 +71,7 @@ export default function App() {
   const responseListener = useRef();
 
   useEffect(() => {
-    console.log('Device Token: ', expoPushToken);
+    console.log('Device Token:444444444444444444 ', expoPushToken);
 
     const updateDeviceToken = async () => {
       if (expoPushToken) {
@@ -126,18 +126,22 @@ export default function App() {
   }, []);
 
   async function registerForPushNotificationsAsync() {
+    console.log('&&&&&&&&&&&&&&&&&')
     let token;
+    console.log('########################')
    
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-  
+    // if (Platform.OS === 'android') {
+    //   await Notifications.setNotificationChannelAsync('default', {
+    //     name: 'default',
+    //     importance: Notifications.AndroidImportance.MAX,
+    //     vibrationPattern: [0, 250, 250, 250],
+    //     lightColor: '#FF231F7C',
+    //   });
+    // }
+    console.log('******************8')
     if (Device.isDevice) {
+      console.log(Device.isDevice, '333333333333333333333333333333333')
+
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
@@ -151,6 +155,7 @@ export default function App() {
       try {
         const projectId =
           Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+          console.log(projectId, '222222222222222222222')
         if (!projectId) {
           throw new Error('Project ID not found');
         }
@@ -159,8 +164,10 @@ export default function App() {
             projectId,
           })
         ).data;
+        console.log(token, '999999999999999999999')
       } catch (e) {
         token = `${e}`;
+        console.log('0000000000000000000000000')
       }
     } else {
       alert('Must use physical device for Push Notifications');
