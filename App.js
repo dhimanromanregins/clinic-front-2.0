@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as LocalAuthentication from 'expo-local-authentication';
 // ********************************
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from './Screens/accounts/LoginScreen';
@@ -69,6 +70,50 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+
+  useEffect(() => {
+    // Check if biometric authentication is available
+    LocalAuthentication.hasHardwareAsync()
+      .then((hasHardware) => {
+        if (hasHardware) {
+          // Check if there are enrolled biometrics (fingerprint, Face ID, etc.)
+          LocalAuthentication.isEnrolledAsync()
+            .then((isEnrolled) => {
+              if (isEnrolled) {
+                // Prompt for fingerprint authentication
+                LocalAuthentication.authenticateAsync({
+                  promptMessage: 'Authenticate with your fingerprint',
+                  fallbackLabel: 'Use PIN',
+                })
+                  .then((result) => {
+                    if (result.success) {
+                      setAuthenticated(true);
+                    } else {
+                      setErrorMessage('Authentication failed');
+                    }
+                  })
+                  .catch((error) => {
+                    setErrorMessage(error.message);
+                  });
+              } else {
+                setErrorMessage('No biometrics enrolled');
+              }
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+        } else {
+          setErrorMessage('Biometric authentication not supported');
+        }
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
+  }, []);
+
 
   useEffect(() => {
     console.log('Device Token:444444444444444444 ', expoPushToken);
