@@ -46,12 +46,23 @@ import PrescriptionAll from './Screens/Myfiles/PrescriptionAll';
 import AllParentSickLeaves from './Screens/Leaves/Parent/AllParentSickLeaves';
 import AllConcern from './Screens/Myfiles/AllConcern';
 import AllLabs from './Screens/Myfiles/AllLabs';
+// import QRScanner from './Screens/scanner/QRScanner';
 import AllSickLeaves from './Screens/Myfiles/AllSickLeaves';
 import SplashScreen from './Screens/SplashScree';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { BASE_URL } from './Actions/Api';
 import Constants from 'expo-constants';
+
+import MedicalReportsbuttons from './Screens/Medical/MedicalReportsbuttons';
+import MedicalReportsRequest from './Screens/Medical/MedicalReportsRequest';
+import RequestWhoMayIConcern from './Screens/Leaves/Cocern/RequestWhoMayIConcern';
+import ConcernRecords from './Screens/Leaves/Cocern/ConcernRecords';
+
+import PrescriptionButtons from './Screens/Medical/PrescriptionButtons';
+import RequestPrescription from './Screens/Medical/RequestPrescription';
+import LabRequestButtons from './Screens/Medical/LabRequestButtons';
+import RequestLab from './Screens/Medical/RequestLab';
 // ********************************
 
 const Stack = createNativeStackNavigator();
@@ -130,7 +141,7 @@ export default function App() {
                 'Authorization': `Bearer ${accessToken}`,
               },
               body: JSON.stringify({
-                device_token: expoPushToken, 
+                device_token: expoPushToken,
               }),
             });
             if (response.ok) {
@@ -156,7 +167,7 @@ export default function App() {
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       console.log('Notification received in foreground:', notification);
     });
-    
+
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       console.log('User interacted with the notification:', response);
@@ -174,7 +185,7 @@ export default function App() {
     console.log('&&&&&&&&&&&&&&&&&')
     let token;
     console.log('########################')
-   
+
     // if (Platform.OS === 'android') {
     //   await Notifications.setNotificationChannelAsync('default', {
     //     name: 'default',
@@ -200,7 +211,7 @@ export default function App() {
       try {
         const projectId =
           Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
-          console.log(projectId, '222222222222222222222')
+        console.log(projectId, '222222222222222222222')
         if (!projectId) {
           throw new Error('Project ID not found');
         }
@@ -217,19 +228,19 @@ export default function App() {
     } else {
       alert('Must use physical device for Push Notifications');
     }
-  
+
     return token;
   }
 
   const authCheck = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      if (token){
+      if (token) {
         setInitialRoute('Dashboard')
       }
     } catch (error) {
     } finally {
-      setTimeout(()=>{
+      setTimeout(() => {
         setIsLoading(false);
       }, 3000);
     }
@@ -241,7 +252,7 @@ export default function App() {
 
   if (isLoading) {
     return (
-      <SplashScreen/>
+      <SplashScreen />
     );
   }
 
@@ -419,7 +430,7 @@ export default function App() {
           name="WhomeItMayCocern"
           component={WhomeItMayCocern}
           options={{
-            headerShown: null,
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -561,6 +572,76 @@ export default function App() {
 
           }}
         />
+        <Stack.Screen
+          name="MedicalReportsbuttons"
+          component={MedicalReportsbuttons}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
+        <Stack.Screen
+          name="MedicalReportsRequest"
+          component={MedicalReportsRequest}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
+        <Stack.Screen
+          name="RequestWhoMayIConcern"
+          component={RequestWhoMayIConcern}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
+        <Stack.Screen
+          name="ConcernRecords"
+          component={ConcernRecords}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+        <Stack.Screen
+          name="PrescriptionButtons"
+          component={PrescriptionButtons}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+        <Stack.Screen
+          name="RequestPrescription"
+          component={RequestPrescription}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
+        <Stack.Screen
+          name="LabRequestButtons"
+          component={LabRequestButtons}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
+        <Stack.Screen
+          name="RequestLab"
+          component={RequestLab}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

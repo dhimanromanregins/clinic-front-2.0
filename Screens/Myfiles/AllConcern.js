@@ -18,7 +18,7 @@ const AllConcern = ({ navigation }) => {
       Almarai_700Bold,
     });
 
-  const SickLeaveHistory = language === 'en' ? 'Whome May I Concern Documents' : 'تاريخ الإجازات المرضية';
+  const SickLeaveHistory = language === 'en' ? 'Who May It Concern Documents' : 'الي من يهمه الأمر';
   const SickLeaveDate = language === 'en' ? 'Sick Leave Date' : 'تاريخ الإجازة المرضية'  ;
 
   const toggleLanguage = async (selectedLanguage) => {

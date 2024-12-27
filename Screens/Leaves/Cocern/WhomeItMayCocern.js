@@ -28,7 +28,7 @@ const WhomeItMayCocern = ({ navigation }) => {
     });
 
 
-  const ToWhomeItMayCocern = language === 'en' ? 'To Whome It May Cocern' : 'إلي من يهمه الأمر';
+  const ToWhomeItMayCocern = language === 'en' ? 'To Whome It May Cocern' : 'الي من يهمه الأمر';
   const ParentName2 = language === 'en' ? 'Parent Name' : 'أسم الاب / الأم';
   const KidsName = language === 'en' ? 'kids Name' : 'أسم الطفل';
   const From = language === 'en' ? 'From' : 'من';

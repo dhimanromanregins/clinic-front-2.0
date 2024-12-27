@@ -16,12 +16,12 @@ const ReportsSick = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
 
-  const MyKid = language === 'en' ? 'My Kid' : 'ملف طفلي ';
+  const MyKid = language === 'en' ? 'My Kids' : 'أطفالي';
   const Reports = language === 'en' ? 'Medical Reports' : 'التقارير الطبية';
   const Reports2 = language === 'en' ? 'Reports' : 'التقارير الطبيه ';
   const SickLeave = language === 'en' ? 'Sick Leave' : 'إجازه مرضية';
-  const ParentSickLeave = language === 'en' ? 'Parent Sick Leave' : 'طلب إجازه مرافق';
-  const Towhomitmayconcern = language === 'en' ? 'To Whom May Concern' : 'إلي من يهمه الأمر';
+  const ParentSickLeave = language === 'en' ? 'Parent Sick Leave' : 'أجازه مرافق';
+  const Towhomitmayconcern = language === 'en' ? 'To Whom May Concern' : 'الي من يهمه الأمر';
   const Lab = language === 'en' ? 'Lab' : 'المختبر';
   const Receipt = language === 'en' ? 'Prescription' : 'وصفه طبيه';
 
@@ -189,7 +189,7 @@ const ReportsSick = ({ route, navigation }) => {
         {/* Sick Leave Button */}
         <TouchableOpacity
           style={[styles.button, styles.buttonShadow]}
-          onPress={() => navigation.navigate('MedicalReports',{ childData })}
+          onPress={() => navigation.navigate('MedicalReportsbuttons',{ childData })}
         >
           <Text style={styles.buttonText}>{Reports}</Text>
         </TouchableOpacity>
@@ -207,7 +207,7 @@ const ReportsSick = ({ route, navigation }) => {
         {/* To Whom May Concern Button */}
         <TouchableOpacity
           style={[styles.button, styles.buttonShadow]}
-          onPress={() => navigation.navigate('WhomeItMayCocern' ,{ childId :childId })}
+          onPress={() => navigation.navigate('RequestWhoMayIConcern' ,{ childData })}
         >
           <Text style={styles.buttonText}>{Towhomitmayconcern}</Text>
         </TouchableOpacity>
@@ -225,7 +225,7 @@ const ReportsSick = ({ route, navigation }) => {
         {/* Receipt Button */}
         <TouchableOpacity
           style={[styles.button, styles.buttonShadow]}
-          onPress={() => navigation.navigate('Precautions',{ childId :childId })}
+          onPress={() => navigation.navigate('PrescriptionButtons',{ childData })}
         >
           <Text style={styles.buttonText}>{Receipt}</Text>
         </TouchableOpacity>
@@ -233,7 +233,7 @@ const ReportsSick = ({ route, navigation }) => {
         {/* Lab Button */}
         <TouchableOpacity
           style={[styles.button, styles.buttonShadow]}
-          onPress={() => navigation.navigate('lab',{ childId :childId })}
+          onPress={() => navigation.navigate('LabRequestButtons',{ childData })}
         >
           <Text style={styles.buttonText}>{Lab}</Text>
         </TouchableOpacity>

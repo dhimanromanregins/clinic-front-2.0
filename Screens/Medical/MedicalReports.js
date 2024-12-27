@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking, Modal, FlatList } from 'react-native';
+import React, { useEffect, useState,useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking , Modal, FlatList} from 'react-native';
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../../Actions/Api';
+import { useFocusEffect } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Almarai_400Regular, Almarai_700Bold } from '@expo-google-fonts/almarai';
 
-const MedicalReports = ({ navigation }) => {
 
+const SickLeave = ({ route, navigation }) => {
+  const { childId } = route.params;
   const [sickLeaveRecords, setSickLeaveRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguage] = useState('en');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const MedicalReports = language === 'en' ? 'Medical Reports' : 'التقارير الطبية';
   const Name = language === 'en' ? 'Name' : 'اسم';
-  
 
   const toggleLanguage = async (selectedLanguage) => {
     try {
@@ -32,19 +33,42 @@ const MedicalReports = ({ navigation }) => {
     { code: 'ur', label: 'العربية' },
   ];
 
+  const [fontsLoaded] = useFonts({
+      Almarai_400Regular,
+      Almarai_700Bold,
+    });
+
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadSelectedLanguage = async () => {
+        try {
+          const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+          if (savedLanguage) {
+            setLanguage(savedLanguage);
+            console.log(`Loaded language from storage: ${savedLanguage}`); // Debugging log
+          }
+        } catch (error) {
+          console.error('Error loading language from local storage:', error);
+        }
+      };
+
+      loadSelectedLanguage(); // Invoke the function to load the language
+    }, [])
+  );
+
   // Function to fetch the sick leave data
   const fetchSickLeaveData = async () => {
     try {
       const accessToken = await AsyncStorage.getItem('access_token'); 
       if (!accessToken) {
-        // Alert.alert("Error", "Access token is missing!");
-        console.log("Access token is missing!")
+        Alert.alert("Error", "Access token is missing!");
         return;
       }
 
-      console.log(`${BASE_URL}/api/documents/parent/medical_report`, "========")
+      console.log(`${BASE_URL}/child-documents/?child_id=${childId}&category=sick_leave`, "========")
 
-      const response = await fetch(`${BASE_URL}/api/documents/parent/medical_report`, {
+      const response = await fetch(`${BASE_URL}/api/documents/child/${childId}/medical_report/`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -66,21 +90,17 @@ const MedicalReports = ({ navigation }) => {
       setIsLoading(false);
     }
   };
-  const [fontsLoaded] = useFonts({
-      Almarai_400Regular,
-      Almarai_700Bold,
-    });
-  
 
   useEffect(() => {
     fetchSickLeaveData();
-  });
+  }, [childId]);
 
   // Function to open the PDF file when clicked
   const openDocument = (documentUrl) => {
-      const fullUrl = `${BASE_URL}${documentUrl}`;
-      Linking.openURL(fullUrl).catch(err => console.error('Failed to open PDF', err));
-    };
+    const fullUrl = `${BASE_URL}${documentUrl}`;
+    Linking.openURL(fullUrl).catch(err => console.error('Failed to open PDF', err));
+  };
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -95,7 +115,7 @@ const MedicalReports = ({ navigation }) => {
         </TouchableOpacity>
 
         {/* Back Button Icon */}
-        
+      
       </View>
       <TouchableOpacity 
           onPress={() => navigation.goBack()} 
@@ -144,11 +164,11 @@ const MedicalReports = ({ navigation }) => {
                 style={styles.cardContent}
                 onPress={() => openDocument(record.document)} // Pass document_url to open it
               >
-                <Text style={styles.cardTextRight}>
-                  {Name}: {record.Name}
-                </Text>
+                {/* <Text style={styles.cardTextRight}>
+                  {SickLeaveDate}: {new Date(record.leave_request_date).toLocaleDateString()}
+                </Text> */}
                 {/* record.leave_request_date */}
-                {/* <Text style={styles.cardTextRight}>{record.Name || 'Download the PDF'}</Text> */}
+                <Text style={styles.cardTextRight}>{Name}:{record.Name}</Text>
                 <MaterialIcons name="picture-as-pdf" size={34} color="#2a4770" />
                 
               </TouchableOpacity>
@@ -166,12 +186,13 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
+    marginTop:30,
     backgroundColor: 'rgba(24,212,184,255)', 
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexDirection: 'row', 
     alignItems: 'center',
-    marginTop:40,
+    
   },
   languageIcon: {
     marginRight: 15,
@@ -249,4 +270,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MedicalReports;
+export default SickLeave;

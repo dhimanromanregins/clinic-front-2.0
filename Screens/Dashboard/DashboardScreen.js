@@ -17,13 +17,13 @@ const Dashboard = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   
-  const MyFiles = language === 'en' ? 'My Kid Files' : 'التقارير و الملفات';
+  const MyFiles = language === 'en' ? 'My Files' : 'التقارير و الملفات';
   const Booking = language === 'en' ? 'Book Medical Consultation' : 'حجز موعد';
-  const Mykids = language === 'en' ? 'My kids' : 'أطفالي';
+  const MyKids = language === 'en' ? 'My kids' : 'أطفالي';
   const Telemedicine = language === 'en' ? 'Tele medicine' : 'العلاج عن بعد';
   const Calendar = language === 'en' ? 'Calendar' : 'مواعيد العيادة';
   const ContactUs = language === 'en' ? 'Contact Us' : 'معلومات العيادة';  
-  const MyKids = language === 'en' ? 'Reports' : 'التقارير و الملفات';
+  // const MyKids = language === 'en' ? 'My Kids' : 'التقارير و الملفات';
   const Review = language === 'en' ? 'Review' : 'التقييم';
   const [backPressedOnce, setBackPressedOnce] = useState(false);
 
@@ -293,7 +293,7 @@ const Dashboard = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('kids')}>
               <MaterialIcons name="people" size={34} color="#2a4770" />
-              <Text style={styles.iconButtonText}>{Mykids}</Text>
+              <Text style={styles.iconButtonText}>{MyKids}</Text>
             </TouchableOpacity>
           </View>
 
@@ -441,8 +441,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#2a4770',
     textAlign:'center',
-    fontSize: 14,
+    fontSize: 10,
     fontFamily: 'Almarai_700Bold',
+    width:'100%',
   },
   modalContainer: {
     flex: 1,

@@ -1,23 +1,22 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking, Modal, FlatList } from 'react-native';
+import React, { useEffect, useState,useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking , Modal, FlatList} from 'react-native';
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL } from '../../Actions/Api';
+import { BASE_URL } from '../../../Actions/Api';
 import { useFocusEffect } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Almarai_400Regular, Almarai_700Bold } from '@expo-google-fonts/almarai';
 
 
-const LabReports = ({ navigation, route }) => {
+const ConcernRecords = ({ route, navigation }) => {
   const { childId } = route.params;
   const [sickLeaveRecords, setSickLeaveRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguage] = useState('en');
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-
-  const LabReports = language === 'en' ? 'Lab Reports' : 'المختبر';
-  // const SickLeaveDate = language === 'en' ? 'Date' : 'تاريخ الإجازة المرضية';
+  const SickLeave = language === 'en' ? 'Who May It concern' : 'الي من يهمه الأمر';
+  const SickLeaveDate = language === 'en' ? 'Sick Leave Date' : 'تاريخ الإجازة المرضية';
 
   const toggleLanguage = async (selectedLanguage) => {
     try {
@@ -29,15 +28,16 @@ const LabReports = ({ navigation, route }) => {
     }
   };
 
+  const languages = [
+    { code: 'en', label: 'English' },
+    { code: 'ur', label: 'العربية' },
+  ];
+
   const [fontsLoaded] = useFonts({
       Almarai_400Regular,
       Almarai_700Bold,
     });
 
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'ur', label: 'العربية' },
-  ];
 
   useFocusEffect(
     useCallback(() => {
@@ -60,15 +60,15 @@ const LabReports = ({ navigation, route }) => {
   // Function to fetch the sick leave data
   const fetchSickLeaveData = async () => {
     try {
-      const accessToken = await AsyncStorage.getItem('access_token');
+      const accessToken = await AsyncStorage.getItem('access_token'); 
       if (!accessToken) {
-        // Alert.alert("Error", "Access token is missing!");
+        Alert.alert("Error", "Access token is missing!");
         return;
       }
 
-      console.log(`${BASE_URL}/child-documents/?child_id=${childId}&category=lab_report`, "========")
+      console.log(`${BASE_URL}/child-documents/?child_id=${childId}&category=sick_leave`, "========")
 
-      const response = await fetch(`${BASE_URL}/api/documents/child/${childId}/lab_report/`, {
+      const response = await fetch(`${BASE_URL}/api/documents/child/${childId}/To_whome_may_concern/`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -93,39 +93,39 @@ const LabReports = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchSickLeaveData();
-  });
+  }, [childId]);
 
   // Function to open the PDF file when clicked
   const openDocument = (documentUrl) => {
     const fullUrl = `${BASE_URL}${documentUrl}`;
-    console.log(fullUrl, '---------------------')
     Linking.openURL(fullUrl).catch(err => console.error('Failed to open PDF', err));
   };
+
 
   return (
     <View style={{ flex: 1 }}>
       {/* Header Section - Full width */}
       <View style={styles.header}>
         {/* Language Switcher Icon */}
-        <TouchableOpacity
-          style={styles.languageIcon}
+        <TouchableOpacity 
+          style={styles.languageIcon} 
           onPress={() => setIsModalVisible(true)}
         >
           <MaterialIcons name="language" size={34} color="white" />
         </TouchableOpacity>
 
         {/* Back Button Icon */}
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
+      
+      </View>
+      <TouchableOpacity 
+          onPress={() => navigation.goBack()} 
           style={styles.backButton}
         >
           <FontAwesome name="angle-left" size={34} color="rgba(24,212,184,255)" />
-        </TouchableOpacity>
-      </View>
-
+        </TouchableOpacity> 
       {/* Scrollable Content */}
       <ScrollView style={styles.container}>
-        <Modal
+      <Modal
           visible={isModalVisible}
           transparent={true}
           animationType="fade"
@@ -150,7 +150,7 @@ const LabReports = ({ navigation, route }) => {
         </Modal>
         {/* Title Section */}
         <View style={styles.textSection}>
-          <Text style={styles.text}>{LabReports}</Text>
+          <Text style={styles.text}>{SickLeave}</Text>
           <View style={styles.borderLine} />
         </View>
 
@@ -160,20 +160,17 @@ const LabReports = ({ navigation, route }) => {
           // Display the sick leave records
           sickLeaveRecords.map((record, index) => (
             <View key={index} style={[styles.card, { backgroundColor: record.isUrgent ? '#FF0000' : '#000' }]}>
-              <TouchableOpacity
+              <TouchableOpacity 
                 style={styles.cardContent}
                 onPress={() => openDocument(record.document)} // Pass document_url to open it
               >
-                {!isNaN(new Date(record.created_at)) && (
-                  <Text style={styles.cardTextRight}>
-                    {SickLeaveDate}: {new Date(record.created_at).toLocaleDateString()}
-                  </Text>
-                )}
+                {/* <Text style={styles.cardTextRight}>
+                  {SickLeaveDate}: {new Date(record.leave_request_date).toLocaleDateString()}
+                </Text> */}
                 {/* record.leave_request_date */}
-                <Text>{record.category}</Text>
                 <Text style={styles.cardTextRight}>Name:{record.Name}</Text>
                 <MaterialIcons name="picture-as-pdf" size={34} color="#2a4770" />
-
+                
               </TouchableOpacity>
             </View>
           ))
@@ -189,11 +186,13 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    backgroundColor: 'rgba(24,212,184,255)',
+    marginTop:30,
+    backgroundColor: 'rgba(24,212,184,255)', 
     paddingVertical: 10,
     paddingHorizontal: 15,
-    flexDirection: 'row',
+    flexDirection: 'row', 
     alignItems: 'center',
+    
   },
   languageIcon: {
     marginRight: 15,
@@ -271,4 +270,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LabReports;
+export default ConcernRecords;
