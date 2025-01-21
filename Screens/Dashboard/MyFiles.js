@@ -106,13 +106,12 @@ const MyFiles = ({ navigation }) => {
         <Text style={styles.text}>{MyFiles} & {Reports2}</Text>
         <View style={styles.borderLine} />
       </View>
-
       {/* Buttons Row */}
       <View style={styles.buttonRow}>
         {/* Sick Leave Button */}
         <TouchableOpacity
           style={[styles.button, styles.buttonShadow]}
-          onPress={() => navigation.navigate('MedicalReports')}
+          onPress={() => navigation.navigate('AllMedicalReports')}
         >
           <Text style={styles.buttonText}>{Reports}</Text>
         </TouchableOpacity>
@@ -262,6 +261,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
   },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
+  },
 });
 
 export default MyFiles;
+

@@ -1,9 +1,8 @@
 {
   "expo": {
-    
-    "name": "Clinic App",
-    "slug": "clinic-app",
-    "version": "1.0.0",
+    "name": "Halim Clinic",
+    "slug": "halim-clinic",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,27 +15,28 @@
     "ios": {
       "supportsTablet": true
     },
-    
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.avajay201.myapp"
+      "keystore": {
+      "keystorePath": "./my-release-key.jks",
+      "keystoreAlias": "expo-key",
+      "keystorePassword": "123456",
+      "keyPassword": "123456"
+  },
+      "package": "com.horizonstar.halimclinic",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "434ecaf9-c178-47e4-88b7-d29b1b8d5078"
+        "projectId": "deba895e-3d17-4ebc-aa57-cae94d498fdf"
       }
     },
-    "owner": "arshpreet1231"
-   
-    
-    
+    "owner": "horizonstar"
   }
 }
-
-

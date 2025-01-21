@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { StyleSheet, Text, View, BackHandler, TextInput, ActivityIndicator, Alert, ToastAndroid,TouchableOpacity, Image, Modal, FlatList, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,8 +26,6 @@ export default function LoginScreen({ navigation }) {
     Almarai_400Regular,
     Almarai_700Bold,
   });
-
-
   const handleLogin = async () => {
     // Reset errors before validation
     setMobileError('');
@@ -51,9 +49,8 @@ export default function LoginScreen({ navigation }) {
       identifier: mobile,
       password: password,
     };
-
-
     try {
+      console.log('loginData>>>', loginData);
       const response = await fetch(`${BASE_URL}/login/`, {
         method: 'POST',
         headers: {
@@ -79,6 +76,7 @@ export default function LoginScreen({ navigation }) {
         );
       }
     } catch (error) {
+      console.log('error>>>', error);
       ToastAndroid.showWithGravity(
         'Network error. Please try again later.',
         ToastAndroid.LONG,
@@ -185,17 +183,16 @@ const ForgetPassword = language === 'en' ? 'Forget Password' : 'هل نسيت ك
             style={styles.logo}
           />
         </View>
-
-
-        {/* Mobile Number Input */}
+      {/* Mobile Number Input */}
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>{mobileText}</Text>
           <TextInput
             style={styles.input}
-            placeholder=""
+            placeholder="Mobile Number/UAE Number"
             value={mobile}
             onChangeText={setMobile}
             keyboardType="phone-pad"
+            textAlign="right"
           />
           {mobileError ? <Text style={styles.errorText}>{mobileError}</Text> : null}
         </View>
@@ -206,9 +203,11 @@ const ForgetPassword = language === 'en' ? 'Forget Password' : 'هل نسيت ك
           <View style={styles.passwordWrapper}>
             <TextInput
               style={styles.input}
-              placeholder=""
+              placeholder="Password"
               value={password}
               onChangeText={setPassword}
+              textAlign="right"
+         
               secureTextEntry={!passwordVisible} // Toggles between secureTextEntry and visible password
             />
             <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
@@ -239,11 +238,14 @@ const ForgetPassword = language === 'en' ? 'Forget Password' : 'هل نسيت ك
         </View>
       </ScrollView>
       
-      <StatusBar style="auto" />
+      <StatusBar 
+   barStyle="light-content" 
+   translucent={true} 
+   backgroundColor="transparent" 
+/>
       </KeyboardAwareScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -256,7 +258,7 @@ const styles = StyleSheet.create({
   },
   languageSwitcher: {
     position: 'absolute',
-    top: 20,
+    top: 50,
     left: 20,
     backgroundColor: 'transparent',
   },
@@ -290,9 +292,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   closeButtonText: {
-    color: 'white',
+    color: '#2a4770',
     fontFamily: 'Almarai_700Bold',
-    fontSize: 16,
+    fontSize: 16, 
+
   },
   logoContainer: {
     marginBottom: 30,  // Adjust this value for spacing between logo and inputs
@@ -326,16 +329,14 @@ const styles = StyleSheet.create({
     width: '100%', // Make the label span the full width for correct alignment
   },
   input: {
+    width: '100%',
     height: 50,
+    paddingHorizontal: 10,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 5,
-    paddingLeft: 10,
-    width: '100%',
-    backgroundColor: 'none', // No background color
+    fontSize: 16,
     fontFamily: 'Almarai_400Regular',
-
-    
   },
   passwordWrapper: {
     flexDirection: 'row',
@@ -344,8 +345,9 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
+    left: 10, // Align to the left side
   },
+  
   signUpContainer: {
     flexDirection: 'row',
     marginTop: 20,
@@ -377,16 +379,21 @@ const styles = StyleSheet.create({
     fontFamily: 'Almarai_700Bold',
   },
   forgotPassword: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-end', 
     marginBottom: 20,
+  borderRadius: 10, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginRight: 20,
   },
   forgotPasswordText: {
     color: '#2a4770',
-    paddingHorizontal:20,
-    fontSize: 14,
-    // fontWeight: 'bold',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    fontSize: 18,
     textDecorationLine: 'underline',
     fontFamily: 'Almarai_700Bold',
+    textAlign: 'center', 
   },
   blackBox: {
     backgroundColor: 'black',
@@ -401,7 +408,7 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: 'red',
-    fontSize: 12,
+    fontSize: 16,
     fontFamily: 'Almarai_400Regular',
   },
 

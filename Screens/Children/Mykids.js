@@ -13,7 +13,6 @@ const MyKids = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState('en');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  console.log(kidDetails, '--------');
 
 
   const toggleLanguage = async (selectedLanguage) => {
@@ -398,6 +397,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
 });
 

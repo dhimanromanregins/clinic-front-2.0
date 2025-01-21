@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529699321402",
+    "project_id": "halim-s-clinic",
+    "storage_bucket": "halim-s-clinic.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529699321402:android:6a45b1ff5e5c1f92eee703",
+        "android_client_info": {
+          "package_name": "com.horizonstar.halimclinic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuU0ZFSWDDMQPtbKvUAEgsuB3aATgrN7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,7 +16,6 @@ const Dashboard = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  
   const MyFiles = language === 'en' ? 'My Files' : 'التقارير و الملفات';
   const Booking = language === 'en' ? 'Book Medical Consultation' : 'حجز موعد';
   const MyKids = language === 'en' ? 'My kids' : 'أطفالي';
@@ -108,7 +107,6 @@ const Dashboard = ({ navigation }) => {
     fetchBanners();
   }, []); 
 
-  console.log(images, '-----------------------')
 
   const getAccessToken = async () => {
     try {
@@ -325,7 +323,6 @@ const Dashboard = ({ navigation }) => {
     
   );
 };
-
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
@@ -344,22 +341,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     position: 'absolute',
-    top: 15,
+    top: 35,
     left: 0,
   },
   leftHeaderIcons: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width: '50%',
-    
-  },
+     },
   rightHeaderIcons: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     width: '50%',
   },
   logoContainer: {
-    marginTop: 100,
+    marginTop: 120,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 20,
@@ -473,6 +469,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
   notificationicon:{
     position:'relative',

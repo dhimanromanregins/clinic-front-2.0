@@ -161,9 +161,10 @@ const AddDetail = ({ route, navigation }) => {
   };
 
   const handleKidChange = (index, selectedKidId) => {
+    
     const newSelectedKids = [...selectedKids];
     const selectedKid = kids.find(kid => kid.id === selectedKidId);
-    newSelectedKids[index] = { id: selectedKidId, name: selectedKid ? selectedKid.name : '' };
+    newSelectedKids[index] = { id: selectedKidId, name: selectedKid ? selectedKid.full_name : '' };
     setSelectedKids(newSelectedKids);
   };
 
@@ -191,16 +192,15 @@ const AddDetail = ({ route, navigation }) => {
     }
 
     const childrenNames = kids.filter(kid => kid !== ''); 
-
+    const childrenNames2 = selectedKids.map((child) => child.name);
     const bookingData = {
       doctor: doctorId,
       user: 1,  
-      children_names: JSON.stringify(childrenNames),
+      children_names: JSON.stringify(childrenNames2),
       slot_start: selectedSlot.start,
       slot_end: selectedSlot.end,
       date: dateTime.split(' ')[0],
     };
-    console.log(bookingData, '--------------')
 
     try {
       const accessToken = await AsyncStorage.getItem('access_token');
@@ -661,6 +661,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
 
   row: {

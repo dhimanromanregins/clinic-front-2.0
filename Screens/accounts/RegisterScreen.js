@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { StyleSheet, Text, View, TextInput, Button, Alert, TouchableOpacity, ToastAndroid,ActivityIndicator,Image, Modal, FlatList, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { useState,useCallback } from 'react';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -91,7 +91,6 @@ export default function RegisterScreen({ navigation }) {
         body: JSON.stringify(data),
       });
       setLoading(false);
-      console.log(response, '---------------------')
       // Check if the response is successful
       if (response.status === 201) {
         const responseData = await response.json(); 
@@ -187,9 +186,10 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>{firstParentNameText}</Text>
           <TextInput
-            style={styles.input}
-            placeholder=""
+           style={[styles.input, { textAlign: 'right' }]}
+            placeholder="Enter Parent Name"
             value={firstParentName}
+       
             onChangeText={setFirstParentName}
           />
         </View>
@@ -199,39 +199,36 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>{uaeIdText}</Text>
           <TextInput
-            style={styles.input}
-            placeholder=""
+          style={[styles.input, { textAlign: 'right' }]}
+            placeholder="UAE ID"
             value={uaeId}
             onChangeText={setUaeId}
             keyboardType="numeric"
           />
         </View>
-
         {errors.uaeId && <Text style={styles.error}>{errors.uaeId}</Text>}
-
         {/* Mobile Number Input */}
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>{mobileText}</Text>
           <TextInput
-            style={styles.input}
-            placeholder=""
+              style={[styles.input, { textAlign: 'right' }]}
+            placeholder=" Enter Mobile Number"
             value={mobile}
             onChangeText={setMobile}
             keyboardType="phone-pad"
           />
         </View>
         {errors.mobile && <Text style={styles.error}>{errors.mobile}</Text>}
-
         {/* Create Password Input */}
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>{passwordText}</Text>
           <View style={styles.passwordWrapper}>
             <TextInput
-              style={styles.input}
-              placeholder=""
+          style={[styles.input, { textAlign: 'right' }]}
+              placeholder="Enter Password"
               value={password}
               onChangeText={setPassword}
-              secureTextEntry={!passwordVisible} // Toggles between secureTextEntry and visible password
+              secureTextEntry={!passwordVisible}
             />
             <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
               <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="grey" />
@@ -256,7 +253,11 @@ export default function RegisterScreen({ navigation }) {
         </View>
         </ScrollView>
 
-      <StatusBar style="auto" />
+        <StatusBar 
+   barStyle="light-content" 
+   translucent={true} 
+   backgroundColor="transparent" 
+/>
     </KeyboardAvoidingView>
   );
 }
@@ -307,12 +308,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
-    
   },
   closeButtonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#2a4770',
     fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
 
   },
   logoContainer: {
@@ -359,11 +359,11 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
+    left: 10,
   },
   error: {
     color: 'red',
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 1,
     fontFamily: 'Almarai_400Regular',
 

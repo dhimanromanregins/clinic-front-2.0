@@ -174,14 +174,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f9f9f9',
     },
-
     languageIcon: {
         backgroundColor: 'rgba(24,212,184,255)', // Background color for the language icon
         padding: 10,
         height: 80,
         paddingTop: '25',
     },
-
     logoWrapper: {
         alignItems: 'center',
         marginVertical: 20, // Add some vertical spacing between elements
@@ -259,6 +257,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#24d4b8',
         borderRadius: 5,
         alignItems: 'center',
+      },
+      closeButtonText: {
+        color: '#2a4770',
+        fontFamily: 'Almarai_700Bold',
+        fontSize: 16, 
+    
       },
 
 });

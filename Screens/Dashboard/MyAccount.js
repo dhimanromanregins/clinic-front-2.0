@@ -142,7 +142,6 @@ const MyAccount = ({ navigation }) => {
     };
 
     const handleSaveProfile = async () => {
-        console.log('***********************', updatedProfile);
         try {
             const accessToken = await AsyncStorage.getItem('access_token');
 
@@ -479,7 +478,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#24d4b8',
         borderRadius: 5,
         alignItems: 'center',
-    },
+      },
+      closeButtonText: {
+        color: '#2a4770',
+        fontFamily: 'Almarai_700Bold',
+        fontSize: 16, 
+    
+      },
     pickerContainer: {
         position: 'relative',
         fontSize: 16,

@@ -387,6 +387,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
   },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
+  },
 });
 
 export default ReportsSick;

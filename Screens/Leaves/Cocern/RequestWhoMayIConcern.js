@@ -9,7 +9,6 @@ import { Almarai_400Regular, Almarai_700Bold } from '@expo-google-fonts/almarai'
 const RequestWhoMayIConcern = ({ route,navigation }) => {
   const { childData } = route.params;
   const childId = childData.id
-  console.log(childId, '------------------------')
   const [language, setLanguage] = useState('en');
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -216,6 +215,12 @@ const styles = StyleSheet.create({
       backgroundColor: '#24d4b8',
       borderRadius: 5,
       alignItems: 'center',
+    },
+    closeButtonText: {
+      color: '#2a4770',
+      fontFamily: 'Almarai_700Bold',
+      fontSize: 16, 
+  
     },
   });
 export default RequestWhoMayIConcern;

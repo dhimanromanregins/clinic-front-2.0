@@ -98,7 +98,6 @@ const LabReports = ({ navigation, route }) => {
   // Function to open the PDF file when clicked
   const openDocument = (documentUrl) => {
     const fullUrl = `${BASE_URL}${documentUrl}`;
-    console.log(fullUrl, '---------------------')
     Linking.openURL(fullUrl).catch(err => console.error('Failed to open PDF', err));
   };
 
@@ -268,6 +267,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
 });
 

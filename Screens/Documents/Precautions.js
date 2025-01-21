@@ -78,7 +78,6 @@ const Precautions = ({ navigation, route }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data, '==========')
         setSickLeaveRecords(data);
       } else {
         // Alert.alert("Error", "Failed to fetch data!");
@@ -267,6 +266,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
 });
 

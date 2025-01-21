@@ -501,13 +501,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Almarai_700Bold',
   },
   closeButton: {
-    // marginTop: 20,
-    padding: 7,
-    marginLeft: 1,
-    marginRight: 2,
+    marginTop: 20,
+    padding: 10,
     backgroundColor: '#24d4b8',
     borderRadius: 5,
     alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#2a4770',
+    fontFamily: 'Almarai_700Bold',
+    fontSize: 16, 
+
   },
   dateInput: {
     textAlign: 'center',

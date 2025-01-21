@@ -46,6 +46,7 @@ import PrescriptionAll from './Screens/Myfiles/PrescriptionAll';
 import AllParentSickLeaves from './Screens/Leaves/Parent/AllParentSickLeaves';
 import AllConcern from './Screens/Myfiles/AllConcern';
 import AllLabs from './Screens/Myfiles/AllLabs';
+import AllMedicalReports from './Screens/Myfiles/AllMedicalReports';
 // import QRScanner from './Screens/scanner/QRScanner';
 import AllSickLeaves from './Screens/Myfiles/AllSickLeaves';
 import SplashScreen from './Screens/SplashScree';
@@ -63,7 +64,10 @@ import PrescriptionButtons from './Screens/Medical/PrescriptionButtons';
 import RequestPrescription from './Screens/Medical/RequestPrescription';
 import LabRequestButtons from './Screens/Medical/LabRequestButtons';
 import RequestLab from './Screens/Medical/RequestLab';
+import db from './FBSetup';
 // ********************************
+// import { initializeApp } from 'firebase/app';
+// import firebaseConfig from './firebaseConfig';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,10 +82,10 @@ Notifications.setNotificationHandler({
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('Login');
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState(null);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [authenticated, setAuthenticated] = useState(false);
+  // const [authenticated, setAuthenticated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
 
@@ -127,64 +131,72 @@ export default function App() {
 
 
   useEffect(() => {
-    console.log('Device Token:444444444444444444 ', expoPushToken);
-
     const updateDeviceToken = async () => {
-      if (expoPushToken) {
-        try {
-          const accessToken = await AsyncStorage.getItem('access_token');
-          if (accessToken) {
-            const response = await fetch(`${BASE_URL}/update_user/`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify({
-                device_token: expoPushToken,
-              }),
-            });
-            if (response.ok) {
-              const data = await response.json();
-              console.log('Device Token Updated Successfully:', data);
-            } else {
-              console.error('Failed to update device token:', response.status);
-            }
+      try {
+        const accessToken = await AsyncStorage.getItem('access_token');
+        if (accessToken) {
+          const response = await fetch(`${BASE_URL}/update_user/`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              device_token: expoPushToken,
+            }),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Device Token Updated Successfully:', data);
           } else {
-            console.log('No access token found in AsyncStorage');
+            console.error('Failed to update device token:', response.status);
           }
-        } catch (error) {
-          console.error('Error updating device token:', error);
+        } else {
+          console.log('No access token found in AsyncStorage');
         }
+      } catch (error) {
+        console.error('Error updating device token:', error);
       }
+    }
+    if (expoPushToken) {
+      updateDeviceToken();
     };
-
-    updateDeviceToken();
   }, [expoPushToken]);
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notification received in foreground:', notification);
-    });
-
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('User interacted with the notification:', response);
-    });
-
-    return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(notificationListener.current);
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    try {
+      // Initialize Firebase
+      // initializeApp(firebaseConfig);
+      // console.log('Firebase initialized');
+  
+      // Register for Push Notifications
+      registerForPushNotificationsAsync().then(token => {
+        console.log('Push Token:', token);
+        token && setExpoPushToken(token);
+      });
+  
+      // Notification listeners
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        console.log('Notification received in foreground:', notification);
+      });
+  
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log('User interacted with the notification:', response);
+      });
+  
+      return () => {
+        notificationListener.current &&
+          Notifications.removeNotificationSubscription(notificationListener.current);
+        responseListener.current &&
+          Notifications.removeNotificationSubscription(responseListener.current);
+      };
+    } catch (error) {
+      console.error('Error initializing Firebase:', error);
+    }
   }, []);
 
   async function registerForPushNotificationsAsync() {
-    console.log('&&&&&&&&&&&&&&&&&')
     let token;
-    console.log('########################')
 
     // if (Platform.OS === 'android') {
     //   await Notifications.setNotificationChannelAsync('default', {
@@ -194,10 +206,7 @@ export default function App() {
     //     lightColor: '#FF231F7C',
     //   });
     // }
-    console.log('******************8')
     if (Device.isDevice) {
-      console.log(Device.isDevice, '333333333333333333333333333333333')
-
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
@@ -211,7 +220,6 @@ export default function App() {
       try {
         const projectId =
           Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
-        console.log(projectId, '222222222222222222222')
         if (!projectId) {
           throw new Error('Project ID not found');
         }
@@ -220,10 +228,8 @@ export default function App() {
             projectId,
           })
         ).data;
-        console.log(token, '999999999999999999999')
       } catch (e) {
         token = `${e}`;
-        console.log('0000000000000000000000000')
       }
     } else {
       alert('Must use physical device for Push Notifications');
@@ -271,7 +277,7 @@ export default function App() {
           name="Register"
           component={RegisterScreen}
           options={{
-            headerTitle: 'Register',
+            headerShown: false,
           }}
         />
 
@@ -636,6 +642,14 @@ export default function App() {
         <Stack.Screen
           name="RequestLab"
           component={RequestLab}
+          options={{
+            headerShown: false,
+
+          }}
+        />
+        <Stack.Screen
+          name="AllMedicalReports"
+          component={AllMedicalReports}
           options={{
             headerShown: false,
 

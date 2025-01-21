@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ToastAndroid, KeyboardAvoidingView, Platform, Image, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import {BASE_URL} from "../../Actions/Api"
@@ -43,7 +43,6 @@ export default function ForgotScreen({ navigation }) {
       Almarai_400Regular,
       Almarai_700Bold,
     });
-
   const forgotText = language === 'en' ? 'Forgot Password' : language === 'es' ? 'Olvidaste tu contraseña' : language === 'fr' ? 'Mot de passe oublié' : 'پاسورڈ بھول گئے';
   const mobileText = language === 'en' ? 'Mobile Number' : language === 'es' ? 'Número de móvil' : language === 'fr' ? 'Numéro de mobile' : 'موبائل نمبر';
   const resetButtonText = language === 'en' ? 'Reset Password' : language === 'es' ? 'Restablecer la contraseña' : language === 'fr' ? 'Réinitialiser le mot de passe' : 'پاسورڈ دوبارہ ترتیب دیں';
@@ -64,10 +63,11 @@ export default function ForgotScreen({ navigation }) {
         <Text style={styles.label}>{mobileText}</Text>
         <TextInput
           style={styles.input}
-          placeholder=""
+          placeholder="Enter Mobile Number"
           value={mobile}
           onChangeText={setMobile}
           keyboardType="phone-pad"
+          textAlign='right'
         />
 
         {/* Reset Button */}
@@ -80,7 +80,11 @@ export default function ForgotScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <StatusBar style="auto" />
+      <StatusBar 
+   barStyle="light-content" 
+   translucent={true} 
+   backgroundColor="transparent" 
+/>
     </KeyboardAvoidingView>
   );
 }
@@ -116,16 +120,15 @@ const styles = StyleSheet.create({
     textAlign: 'right', 
     width: '100%',
     fontFamily: 'Almarai_700Bold',
-
   },
   input: {
     width: '100%',
     height: 50,
+    paddingHorizontal: 10,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+    fontSize: 16,
     fontFamily: 'Almarai_400Regular',
 
   },

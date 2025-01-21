@@ -1,10 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ToastAndroid, KeyboardAvoidingView, Platform, Image, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import {BASE_URL} from "../../Actions/Api"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
 export default function ResetPassword({ navigation, route }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -56,12 +54,10 @@ export default function ResetPassword({ navigation, route }) {
       setError('Failed to connect to the server');
     }
   };
-
   const forgotText = language === 'en' ? 'Forgot Password' : language === 'es' ? 'Olvidaste tu contraseña' : language === 'fr' ? 'Mot de passe oublié' : 'پاسورڈ بھول گئے';
   const passwordText = language === 'en' ? 'New Password' : language === 'es' ? 'Nueva contraseña' : language === 'fr' ? 'Nouveau mot de passe' : 'نیا پاسورڈ';
   const confirmPasswordText = language === 'en' ? 'Confirm Password' : language === 'es' ? 'Confirmar contraseña' : language === 'fr' ? 'Confirmer le mot de passe' : 'پاسورڈ کی تصدیق کریں';
   const resetButtonText = language === 'en' ? 'Reset Password' : language === 'es' ? 'Restablecer la contraseña' : language === 'fr' ? 'Réinitialiser le mot de passe' : 'پاسورڈ دوبارہ ترتیب دیں';
-
   return (
     <KeyboardAwareScrollView
     contentContainerStyle={styles.scrollView}
@@ -75,22 +71,20 @@ export default function ResetPassword({ navigation, route }) {
             style={styles.logo}
           />
         </View>
-
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <Text style={styles.label}>{passwordText}</Text>
         <TextInput
-          style={styles.input}
-          placeholder=""
+     style={[styles.input, { textAlign: 'right' }]}
+          placeholder="Enter New Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
-
         <Text style={styles.label}>{confirmPasswordText}</Text>
         <TextInput
-          style={styles.input}
-          placeholder=""
+          style={[styles.input, { textAlign: 'right' }]}
+          placeholder="Confirm Password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
@@ -106,7 +100,11 @@ export default function ResetPassword({ navigation, route }) {
         </TouchableOpacity>
       </View>
 
-      <StatusBar style="auto" />
+      <StatusBar 
+   barStyle="light-content" 
+   translucent={true} 
+   backgroundColor="transparent" 
+/>
     </KeyboardAwareScrollView>
   );
 }
@@ -148,11 +146,11 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 50,
+    paddingHorizontal: 10,
+    borderColor: '#000',
     borderWidth: 2,
     borderRadius: 5,
-    paddingLeft: 10,
-    backgroundColor: 'transparent',
-    marginBottom: 20,
+    fontSize: 16,
     fontFamily: 'Almarai_400Regular',
 
   },

@@ -23,7 +23,6 @@ const BookingConfirm = ({ route, navigation }) => {
   const DownloadPDF = language === 'en' ? 'Download PDF' : 'تحميل';
   const HomePage = language === 'en' ? 'Home Page' : 'الصفحة الرئيسية';
 
-  console.log(bookingData, '===============')
 
   const [fontsLoaded] = useFonts({
       Almarai_400Regular,
@@ -48,37 +47,7 @@ const BookingConfirm = ({ route, navigation }) => {
     }, [])
   );
 
-  const generatePDF = async () => {
-    const htmlContent = `
-      <h1 style="text-align: center; color: #2a4770;">Booking Confirmation</h1>
-      <p><b>Kid Names:</b> ${(() => {
-        try {
-          const names = JSON.parse(bookingData.children_names);
-          return names.map(name => name.trim()).join(', ');
-        } catch {
-          return 'Invalid Data';
-        }
-      })()}</p>
-      <p><b>Date:</b> ${bookingData.date}</p>
-      <p><b>Time:</b> ${bookingData.slot_start} - ${bookingData.slot_end}</p>
-      <p><b>Doctor Name:</b> ${doctor_details.name}</p>
-      <p><b>ID Number:</b> 2024145</p>
-    `;
-
-    try {
-      const options = {
-        html: htmlContent,
-        fileName: 'BookingConfirmation',
-        directory: 'Documents',
-      };
-
-      const file = await RNHTMLtoPDF.convert(options);
-      Alert.alert('PDF Generated', `Saved to ${file.filePath}`);
-    } catch (error) {
-      console.error('PDF Generation Error:', error);
-      Alert.alert('Error', 'Could not generate the PDF. Try again later.');
-    }
-  };
+  
   return (
     <View style={{ flex: 1 }}>
 
